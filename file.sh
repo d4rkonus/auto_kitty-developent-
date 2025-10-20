@@ -12,7 +12,7 @@ purpleColour="\e[0;35m\033[1m"
 turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 
-ruta=$(pwd)   # ← corregido (sin espacio entre = y $(pwd))
+ruta=$(pwd) 
 
 # Check the user
 check_root_user(){
@@ -67,6 +67,21 @@ create_kitty_files(){
     fi
 }
 
+p10k_install(){
+    # normal user
+    cd /home/$USER/
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+    echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+
+    # root user
+    sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+}
+
+p10k_conf(){
+    cp -v $ruta/.p10k.zsh /home/$USER/
+    sudo cp -v $ruta/.p10k.zsh /root/p10k.zsh
+}
+
 # Execution
 #----------------------------------------------
 check_root_user
@@ -74,3 +89,5 @@ update_system
 install_kitty
 move_fonts
 create_kitty_files
+p10k_install
+p10k_conf
