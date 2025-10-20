@@ -25,23 +25,29 @@ check_root_user(){
 # Update the system
 update_system(){
     echo -e "${blueColour}[+] Updating system...${endColour}"
-    apt update -y && apt upgrade -y
+    apt update -y && apt upgrade -y 2>&1
 }
 
 # Install kitty
 install_kitty(){
     echo -e "${blueColour}[+] Installing Kitty and Zsh...${endColour}"
-    apt install -y kitty zsh
+    apt install -y kitty zsh 2>&1
 }
 
 # Move the fonts
 move_fonts(){
    echo -e "${blueColour}[+] Moving fonts...${endColour}"
-   cp -v "$ruta/fonts/"* /usr/share/fonts/ 
+   cp -v "$ruta/fonts/"* /usr/share/fonts/ 2>&1
    fc-cache -fv >/dev/null 2>&1
 }
 echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}"
 
+# Create kitty files
+create_kitty_files(){
+    echo -e "${blueColour}[+] Creating kitty files...${endColour}"
+    mkdir -p /.config/kitty 2>&1
+    cp -v "$ruta/config/kitty/"* /.config/kitty 2>&1
+}
 
 # Execution
 #----------------------------------------------
@@ -49,3 +55,4 @@ check_root_user
 update_system
 install_kitty
 move_fonts
+create_kitty_files
