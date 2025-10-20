@@ -37,17 +37,12 @@ install_kitty(){
 # Move the fonts
 move_fonts(){
    echo -e "${blueColour}[+] Moving fonts...${endColour}"
-
-   # ruta corregida y uso correcto de /usr/share/fonts (sin ~)
-   cp -v "$ruta/auto_kitty-development/fonts/"* /usr/share/fonts/ || {
-       echo -e "${redColour}[!] Error copying fonts.${endColour}"
-       return 1
-   }
-
-   # actualizar la caché de fuentes
-   fc-cache -fv >/dev/null 2>&1
-   echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}"
+   cp -v "$ruta/auto_kitty-developent-/fonts/"* /usr/share/fonts/ 
 }
+
+fc-cache -fv >/dev/null 2>&1
+echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}"
+
 
 # Execution
 #----------------------------------------------
