@@ -49,7 +49,7 @@ echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}\n"
 create_kitty_files(){
     echo -e "${blueColour}[+] Creating kitty files...${endColour}"
     mkdir -p /.config/kitty 2>&1
-    cp -v "$ruta/config_kitty/"* /.config/kitty 2>&1
+    cp -vr "$ruta/config_kitty/"* /home/$USER/.config/kitty 2>&1
 }
 echo -e "${greenColour}[✓] Kitty really to road.${endColour}\n"
 
