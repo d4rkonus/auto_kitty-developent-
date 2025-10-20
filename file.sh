@@ -40,7 +40,7 @@ install_kitty(){
 # Move the fonts
 
 move_fonts(){
-   sudo cp -v $ruta/auto_kitty/fonts/* ~/usr/share/fonts/ 2>&1
+   sudo cp -v $ruta/auto_kitty-developent-/fonts/* ~/usr/share/fonts/ 2>&1
 }
 
 
