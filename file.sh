@@ -83,3 +83,4 @@ update_system
 install_kitty
 move_fonts
 create_kitty_files
+p10k_install
