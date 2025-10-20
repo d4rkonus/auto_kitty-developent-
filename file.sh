@@ -68,18 +68,79 @@ create_kitty_files(){
 }
 
 p10k_install(){
-    # normal user
-    cd /home/$USER/
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-    echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+    echo -e "${blueColour}[+] Installing p10k...${endColour}"
 
-    # root user
-    sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+    target_user=${SUDO_USER:-$USER}
+    if [ "$target_user" = "root" ]; then
+        user_home="/root"
+    else
+        user_home=$(eval echo "~$target_user")
+    fi
+
+    user_repo="$user_home/.powerlevel10k"
+    root_repo="/root/.powerlevel10k"
+
+    # -- Usuario (invocador)
+    if [ -d "$user_repo/.git" ]; then
+        # actualizar si ya existe
+        git -C "$user_repo" pull --quiet >/dev/null 2>&1 || true
+    else
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$user_repo" >/dev/null 2>&1 || true
+        # ajustar propietario si estamos como root y el usuario no es root
+        if [ "$target_user" != "root" ]; then
+            chown -R "$target_user:$target_user" "$user_repo" >/dev/null 2>&1 || true
+        fi
+    fi
+
+    # asegurar que .zshrc del usuario contiene la línea source (añadir solo si falta)
+    if [ -f "$user_home/.zshrc" ]; then
+        if ! grep -qxF "source $user_repo/powerlevel10k.zsh-theme" "$user_home/.zshrc"; then
+            echo "source $user_repo/powerlevel10k.zsh-theme" >> "$user_home/.zshrc"
+            chown "$target_user:$target_user" "$user_home/.zshrc" >/dev/null 2>&1 || true
+        fi
+    else
+        echo "source $user_repo/powerlevel10k.zsh-theme" > "$user_home/.zshrc"
+        chown "$target_user:$target_user" "$user_home/.zshrc" >/dev/null 2>&1 || true
+    fi
+
+    # -- Root
+    if [ -d "$root_repo/.git" ]; then
+        git -C "$root_repo" pull --quiet >/dev/null 2>&1 || true
+    else
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$root_repo" >/dev/null 2>&1 || true
+    fi
+
+    if [ -f /root/.zshrc ]; then
+        if ! grep -qxF "source $root_repo/powerlevel10k.zsh-theme" /root/.zshrc; then
+            echo "source $root_repo/powerlevel10k.zsh-theme" >> /root/.zshrc
+        fi
+    else
+        echo "source $root_repo/powerlevel10k.zsh-theme" > /root/.zshrc
+    fi
+
+    echo -e "${greenColour}[✓] p10k installed/updated.${endColour}\n"
 }
 
 p10k_conf(){
-    cp -v $ruta/.p10k.zsh /home/$USER/
-    sudo cp -v $ruta/.p10k.zsh /root/p10k.zsh
+    echo -e "${blueColour}[+] Installing p10k config...${endColour}"
+
+    target_user=${SUDO_USER:-$USER}
+    if [ "$target_user" = "root" ]; then
+        user_home="/root"
+    else
+        user_home=$(eval echo "~$target_user")
+    fi
+
+    # si existe el archivo de config local en $ruta, lo copiamos a los homes correctos
+    if [ -f "$ruta/.p10k.zsh" ]; then
+        cp -f "$ruta/.p10k.zsh" "$user_home/.p10k.zsh" >/dev/null 2>&1 || true
+        chown "$target_user:$target_user" "$user_home/.p10k.zsh" >/dev/null 2>&1 || true
+
+        cp -f "$ruta/.p10k.zsh" /root/.p10k.zsh >/dev/null 2>&1 || true
+        echo -e "${greenColour}[✓] p10k config copied to user and root.${endColour}\n"
+    else
+        echo -e "${yellowColour}[!] No .p10k.zsh found in $ruta, skipping config copy.${endColour}\n"
+    fi
 }
 
 # Execution
