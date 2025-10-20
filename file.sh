@@ -53,28 +53,19 @@ move_fonts(){
 create_kitty_files(){
     echo -e "${blueColour}[+] Creating kitty files...${endColour}"
 
-    mkdir -p /home/$USER/.config/kitty >/dev/null 2>&1
+    target_user=${SUDO_USER:-$USER}
+
+    mkdir -p "/home/$target_user/.config/kitty" >/dev/null 2>&1
     mkdir -p /root/.config >/dev/null 2>&1
 
     if [ -d "$ruta/config_kitty" ]; then
-        cp -r "$ruta/config_kitty/"* /home/$SUDO_USER/.config/kitty/ >/dev/null 2>&1
-        sudo cp -r "$ruta/config_kitty/"* /root/.config/ >/dev/null 2>&1
+        cp -r "$ruta/config_kitty/"* "/home/$target_user/.config/kitty/" >/dev/null 2>&1
+        cp -r "$ruta/config_kitty/"* /root/.config/ >/dev/null 2>&1
         echo -e "${greenColour}[✓] Kitty ready to run.${endColour}\n"
     else
         echo -e "${redColour}[!] Config directory not found: $ruta/config_kitty${endColour}\n"
     fi
 }
-
-
-# Install p10k
-p10k_install(){
-    echo -e "${blueColour}[+] Installing p10k...${endColour}"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-    echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-    sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
-}
-
-
 
 # Execution
 #----------------------------------------------
@@ -83,4 +74,3 @@ update_system
 install_kitty
 move_fonts
 create_kitty_files
-p10k_install
