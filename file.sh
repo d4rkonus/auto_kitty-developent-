@@ -12,6 +12,7 @@ purpleColour="\e[0;35m\033[1m"
 turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 
+ruta= $(pwd)
 
 # Check the user
 
@@ -39,7 +40,7 @@ install_kitty(){
 # Move the fonts
 
 move_fonts(){
-   sudo cp -v ~/auto_kitty/fonts/* ~/usr/share/fonts/ 2>&1
+   sudo cp -v $ruta/auto_kitty/fonts/* ~/usr/share/fonts/ 2>&1
 }
 
 
@@ -47,7 +48,7 @@ move_fonts(){
 
 
 # Execution
-----------------------------------------------
+#----------------------------------------------
 
 check_root_user
 update_system
