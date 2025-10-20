@@ -42,3 +42,14 @@ move_fonts(){
    sudo cp -v ~/auto_kitty/fonts/* ~/usr/share/fonts/ 2>&1
 }
 
+
+
+
+
+# Execution
+----------------------------------------------
+
+check_root_user
+update_system
+install_kitty
+move_fonts
