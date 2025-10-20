@@ -27,12 +27,15 @@ update_system(){
     echo -e "${blueColour}[+] Updating system...${endColour}"
     apt update -y && apt upgrade -y 2>&1
 }
+echo -e "${greenColour}[✓] System upgrades checked.${endColour}\n"
 
 # Install kitty
 install_kitty(){
     echo -e "${blueColour}[+] Installing Kitty and Zsh...${endColour}"
     apt install -y kitty zsh 2>&1
 }
+echo -e "${greenColour}[✓] Kitty installed.${endColour}\n"
+
 
 # Move the fonts
 move_fonts(){
@@ -40,14 +43,17 @@ move_fonts(){
    cp -v "$ruta/fonts/"* /usr/share/fonts/ 2>&1
    fc-cache -fv >/dev/null 2>&1
 }
-echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}"
+echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}\n"
 
 # Create kitty files
 create_kitty_files(){
     echo -e "${blueColour}[+] Creating kitty files...${endColour}"
     mkdir -p /.config/kitty 2>&1
-    cp -v "$ruta/config/kitty/"* /.config/kitty 2>&1
+    cp -v "$ruta/config_kitty/"* /.config/kitty 2>&1
 }
+echo -e "${greenColour}[✓] Kitty really to road.${endColour}\n"
+
+
 
 # Execution
 #----------------------------------------------
