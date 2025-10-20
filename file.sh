@@ -2,7 +2,7 @@
 
 # Made by d4rkonus
 
-#Colours
+# Colours
 greenColour="\e[0;32m\033[1m"
 endColour="\033[0m\e[0m"
 redColour="\e[0;31m\033[1m"
@@ -12,44 +12,45 @@ purpleColour="\e[0;35m\033[1m"
 turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 
-ruta= $(pwd)
+ruta=$(pwd)   # ← corregido (sin espacio entre = y $(pwd))
 
 # Check the user
-
 check_root_user(){
-    if [ "$UID" -ne 0 ]; then
-        echo "Please, run this script as Root User."
+    if [ "$EUID" -ne 0 ]; then
+        echo -e "${redColour}[!] Please, run this script as Root User.${endColour}"
         exit 1
     fi
 }
 
-
-# Update to the system
-
+# Update the system
 update_system(){
-    apt update -y && apt upgrade -y 2>&1
+    echo -e "${blueColour}[+] Updating system...${endColour}"
+    apt update -y && apt upgrade -y
 }
 
-
 # Install kitty
-
 install_kitty(){
-    apt install -y kitty zsh 2>&1
+    echo -e "${blueColour}[+] Installing Kitty and Zsh...${endColour}"
+    apt install -y kitty zsh
 }
 
 # Move the fonts
-
 move_fonts(){
-   sudo cp -v $ruta/auto_kitty-developent-/fonts/* ~/usr/share/fonts/ 2>&1
+   echo -e "${blueColour}[+] Moving fonts...${endColour}"
+
+   # ruta corregida y uso correcto de /usr/share/fonts (sin ~)
+   cp -v "$ruta/auto_kitty-development/fonts/"* /usr/share/fonts/ || {
+       echo -e "${redColour}[!] Error copying fonts.${endColour}"
+       return 1
+   }
+
+   # actualizar la caché de fuentes
+   fc-cache -fv >/dev/null 2>&1
+   echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}"
 }
-
-
-
-
 
 # Execution
 #----------------------------------------------
-
 check_root_user
 update_system
 install_kitty
