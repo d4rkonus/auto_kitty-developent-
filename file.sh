@@ -37,7 +37,7 @@ install_kitty(){
 # Move the fonts
 move_fonts(){
    echo -e "${blueColour}[+] Moving fonts...${endColour}"
-   cp -v "$ruta/fonts"* /usr/share/fonts/ 
+   cp -v "$ruta/fonts/"* /usr/share/fonts/ 
    fc-cache -fv >/dev/null 2>&1
 }
 echo -e "${greenColour}[✓] Fonts installed successfully.${endColour}"
